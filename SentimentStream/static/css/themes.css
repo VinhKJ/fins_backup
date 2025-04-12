@@ -1,0 +1,193 @@
+/* Base color variables */
+:root {
+    /* Light mode (default) */
+    --bg-color: #020508;
+    --bg-secondary: #ffffff;
+    --text-color: #212529;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.075);
+    --navbar-bg: #ffffff;
+    --navbar-border: #e9ecef;
+    --sidebar-bg: #ffffff;
+    --link-color: #0d6efd;
+    --link-hover: #0a58ca;
+    --btn-default-bg: #f8f9fa;
+    --btn-default-border: #dee2e6;
+    --btn-default-text: #212529;
+    --positive-color: #28a745;
+    --negative-color: #dc3545;
+    --neutral-color: #ebfc02;
+    --code-bg: #f1f3f5;
+    --hover-bg: #f1f3f5;
+    --footer-bg: #f8f9fa;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --input-focus-border: #86b7fe;
+    --btn-primary-bg: #0d6efd;
+    --btn-primary-text: #ffffff;
+    --modal-bg: #ffffff;
+    --scrollbar-thumb: #adb5bd;
+    --scrollbar-track: #f1f3f5;
+    --theme-icon: "☀️";
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+    --bg-color: #212529;
+    --bg-secondary: #343a40;
+    --text-color: #f8f9fa;
+    --text-muted: #adb5bd;
+    --border-color: #495057;
+    --card-bg: #343a40;
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    --navbar-bg: #343a40;
+    --navbar-border: #495057;
+    --sidebar-bg: #343a40;
+    --link-color: #6ea8fe;
+    --link-hover: #8bb9fe;
+    --btn-default-bg: #343a40;
+    --btn-default-border: #495057;
+    --btn-default-text: #f8f9fa;
+    --positive-color: #4cb85c;
+    --negative-color: #e76371;
+    --neutral-color: #adb5bd;
+    --code-bg: #495057;
+    --hover-bg: #495057;
+    --footer-bg: #343a40;
+    --input-bg: #495057;
+    --input-border: #6c757d;
+    --input-focus-border: #6ea8fe;
+    --btn-primary-bg: #0d6efd;
+    --btn-primary-text: #ffffff;
+    --modal-bg: #343a40;
+    --scrollbar-thumb: #6c757d;
+    --scrollbar-track: #343a40;
+    --theme-icon: "🌙";
+}
+
+/* Apply variables to elements */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar {
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid var(--navbar-border);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: var(--card-shadow);
+}
+
+.btn-default {
+    background-color: var(--btn-default-bg);
+    border-color: var(--btn-default-border);
+    color: var(--btn-default-text);
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+input, select, textarea {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-color);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--input-focus-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    color: var(--text-color);
+}
+
+.sidebar {
+    background-color: var(--sidebar-bg);
+    border-color: var(--border-color);
+}
+
+code {
+    background-color: var(--code-bg);
+    color: var(--text-color);
+}
+
+/* Sentiment colors */
+.sentiment-positive {
+    color: var(--positive-color);
+}
+
+.sentiment-negative {
+    color: var(--negative-color);
+}
+
+.sentiment-neutral {
+    color: var(--neutral-color);
+}
+
+/* Hover states */
+.hover-effect:hover {
+    background-color: var(--hover-bg);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+.theme-toggle:hover {
+    color: var(--link-color);
+}
+
+.theme-toggle::after {
+    content: var(--theme-icon);
+    display: inline-block;
+}
