@@ -31,13 +31,13 @@ def generate_word_cloud(text, post_id):
         return None
     
     try:
-        # Create directory if it doesn't exist
-        static_dir = os.path.join('static', 'images', 'wordclouds')
+        # Create directory in the frontend for generated images
+        static_dir = 'frontend'
         os.makedirs(static_dir, exist_ok=True)
-        
+
         # Create filename with timestamp to avoid caching issues
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        filename = f"{post_id}_{timestamp}.png"
+        filename = f"wordcloud_{post_id}_{timestamp}.png"
         filepath = os.path.join(static_dir, filename)
         
         # Process text: lowercase and remove special characters
@@ -84,7 +84,7 @@ def generate_word_cloud(text, post_id):
         plt.close()
         
         # Return the URL path to the image
-        return f"/static/images/wordclouds/{filename}"
+        return f"/{filename}"
     except Exception as e:
         print(f"Error generating word cloud: {e}")
         return None
