@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSentiment - Financial Market Sentiment Analysis</title>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/spinner.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <span>
+                <img src="static/images/logoreddit.png" alt="Reddit Financial King" width="38" height="38" style="vertical-align: middle; border-radius: 50%;">
+                <span class="logo-text">FINSENT</span>
+            </span>
+        </div>
+        <form id="search-form" class="search-bar" action="#" method="GET">
+            <input type="text" name="q" placeholder="Search financial topics, stocks, companies...">
+            <i class="fas fa-search search-icon"></i>
+        </form>
+        <div class="user-controls">
+            <a href="index.html" class="btn btn-secondary">Home</a>
+            <a href="trend_analysis.html" class="btn btn-secondary">Trends</a>
+            <a href="stock_list.html" class="btn btn-secondary">Stocks</a>
+            <a href="about.html" class="btn btn-secondary">About</a>
+        </div>
+    </header>
+
+    <div id="error-container" class="alert alert-danger" style="display: none; width: 100%; position: fixed; top: 70px; z-index: 1000;"></div>
+
+    <div class="main-container">
+        <div class="content">
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <span class="filter-label">Subreddit:</span>
+                    <select name="subreddit" class="filter-select">
+                        <option value="wallstreetbets">r/wallstreetbets</option>
+                        <option value="investing">r/investing</option>
+                        <option value="stocks">r/stocks</option>
+                        <option value="finance">r/finance</option>
+                        <option value="cryptocurrency">r/cryptocurrency</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Time:</span>
+                    <select name="time_period" class="filter-select">
+                        <option value="hour">Past Hour</option>
+                        <option value="day">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Sort:</span>
+                    <select name="sort_by" class="filter-select">
+                        <option value="hot">Hot</option>
+                        <option value="new">New</option>
+                        <option value="top">Top</option>
+                        <option value="controversial">Controversial</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-content">
+                    <h4>Overall Sentiment</h4>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div>
+                            <div class="sentiment-tag sentiment-positive">
+                                <i class="fas fa-arrow-up mr-1"></i> Positive: <span id="overall-positive">0</span>
+                            </div>
+                            <div class="sentiment-tag sentiment-neutral mt-1">
+                                <i class="fas fa-minus mr-1"></i> Neutral: <span id="overall-neutral">0</span>
+                            </div>
+                            <div class="sentiment-tag sentiment-negative mt-1">
+                                <i class="fas fa-arrow-down mr-1"></i> Negative: <span id="overall-negative">0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="trend_analysis.html" class="btn btn-primary">
+                                <i class="fas fa-chart-line mr-1"></i> View Trends
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="posts-container">
+                <div class="card">
+                    <div class="card-content text-center p-4">
+                        <i class="fas fa-spinner fa-spin fa-3x text-muted mb-3"></i>
+                        <h3>Loading posts...</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">About FinSentiment</div>
+                <div class="sidebar-card-content">
+                    <p>FinSentiment analyzes financial discussions from Reddit to provide market sentiment data and trends.</p>
+                    <a href="about.html" class="btn btn-orange btn-sm">Learn More</a>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">Popular Financial Subreddits</div>
+                <div class="sidebar-card-content">
+                    <ul class="sidebar-list">
+                        <li class="sidebar-list-item"><a href="#">r/wallstreetbets</a></li>
+                        <li class="sidebar-list-item"><a href="#">r/investing</a></li>
+                        <li class="sidebar-list-item"><a href="#">r/stocks</a></li>
+                        <li class="sidebar-list-item"><a href="#">r/finance</a></li>
+                        <li class="sidebar-list-item"><a href="#">r/cryptocurrency</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">Trending Entities</div>
+                <div class="sidebar-card-content">
+                    <ul class="sidebar-list">
+                        <li class="sidebar-list-item"><a href="trend_analysis.html?entity=AAPL">Apple (AAPL)</a></li>
+                        <li class="sidebar-list-item"><a href="trend_analysis.html?entity=TSLA">Tesla (TSLA)</a></li>
+                        <li class="sidebar-list-item"><a href="trend_analysis.html?entity=market">Overall Market</a></li>
+                        <li class="sidebar-list-item"><a href="trend_analysis.html?entity=BTC">Bitcoin (BTC)</a></li>
+                        <li class="sidebar-list-item"><a href="trend_analysis.html?entity=GME">GameStop (GME)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">Stock Analysis</div>
+                <div class="sidebar-card-content">
+                    <p>View price and sentiment correlation for popular stocks</p>
+                    <a href="stock_list.html" class="btn btn-green btn-sm">View All Stocks</a>
+                    <ul class="sidebar-list mt-2">
+                        <li class="sidebar-list-item"><a href="stock_detail.html?symbol=AAPL">Apple (AAPL)</a></li>
+                        <li class="sidebar-list-item"><a href="stock_detail.html?symbol=TSLA">Tesla (TSLA)</a></li>
+                        <li class="sidebar-list-item"><a href="stock_detail.html?symbol=MSFT">Microsoft (MSFT)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-4 p-3 text-center text-muted">
+        <div class="container">
+            <p>&copy; 2025 FinSentiment. All rights reserved.</p>
+            <p class="small">This platform analyzes Reddit content for informational purposes only. Not financial advice.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const apiUrl = 'https://finsentiment-backend.onrender.com/api/posts';
+
+    function formatRelativeDate(date) {
+        const now = new Date();
+        const diffMs = now - date;
+        const diffSeconds = Math.floor(diffMs / 1000);
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        const diffHours = Math.floor(diffMinutes / 60);
+        const diffDays = Math.floor(diffHours / 24);
+        if (diffSeconds < 60) return 'just now';
+        if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        if (diffDays < 30) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+        return date.toLocaleDateString();
+    }
+
+    function getSentimentClass(score) {
+        if (score >= 0.05) return 'sentiment-positive';
+        if (score <= -0.05) return 'sentiment-negative';
+        return 'sentiment-neutral';
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function updateOverallSentiment(pos, neu, neg) {
+        document.getElementById('overall-positive').textContent = pos;
+        document.getElementById('overall-neutral').textContent = neu;
+        document.getElementById('overall-negative').textContent = neg;
+    }
+
+    function getRelativeTime(created) {
+        let date = new Date(created);
+        if (isNaN(date)) {
+            date = new Date(created * 1000);
+        }
+        return formatRelativeDate(date);
+    }
+
+    async function loadPosts() {
+        const container = document.getElementById('posts-container');
+        container.innerHTML = '<div class="card"><div class="card-content text-center p-4"><i class="fas fa-spinner fa-spin fa-3x text-muted mb-3"></i><h3>Loading posts...</h3></div></div>';
+        try {
+            const params = new URLSearchParams();
+            const subreddit = document.querySelector('select[name="subreddit"]').value;
+            const time = document.querySelector('select[name="time_period"]').value;
+            const sort = document.querySelector('select[name="sort_by"]').value;
+            if (subreddit) params.append('subreddit', subreddit);
+            if (time) params.append('time_period', time);
+            if (sort) params.append('sort_by', sort);
+            const res = await fetch(`${apiUrl}?${params.toString()}`);
+            const posts = await res.json();
+            renderPosts(posts);
+        } catch (err) {
+            container.innerHTML = '<div class="card"><div class="card-content text-center p-4"><i class="fas fa-search fa-3x text-muted mb-3"></i><h3>Failed to load posts</h3><p class="text-muted">Please try again later.</p></div></div>';
+        }
+    }
+
+    function renderPosts(posts) {
+        const container = document.getElementById('posts-container');
+        container.innerHTML = '';
+        if (!posts || posts.length === 0) {
+            container.innerHTML = '<div class="card"><div class="card-content text-center p-4"><i class="fas fa-search fa-3x text-muted mb-3"></i><h3>No posts found</h3><p class="text-muted">Try changing your filters or searching for something else.</p></div></div>';
+            updateOverallSentiment(0,0,0);
+            return;
+        }
+        let pos = 0, neu = 0, neg = 0;
+        posts.forEach(post => {
+            const sentimentClass = getSentimentClass(post.sentiment.compound);
+            if (sentimentClass === 'sentiment-positive') pos++;
+            else if (sentimentClass === 'sentiment-negative') neg++;
+            else neu++;
+            const sentimentIcon = sentimentClass === 'sentiment-positive' ? 'fas fa-arrow-up' : sentimentClass === 'sentiment-negative' ? 'fas fa-arrow-down' : 'fas fa-minus';
+            const sentimentLabel = sentimentClass === 'sentiment-positive' ? 'Positive' : sentimentClass === 'sentiment-negative' ? 'Negative' : 'Neutral';
+            const fullText = post.selftext || '';
+            const hasLongText = fullText.length > 500;
+            const shortText = fullText.slice(0,500);
+            const postEl = document.createElement('div');
+            postEl.className = 'post';
+            postEl.dataset.id = post.id;
+            postEl.dataset.fullText = fullText;
+            postEl.innerHTML = `
+                <div class="post-votes">
+                    <button class="vote-button upvote"><i class="fas fa-arrow-up"></i></button>
+                    <div class="vote-count">${post.score}</div>
+                    <button class="vote-button downvote"><i class="fas fa-arrow-down"></i></button>
+                </div>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <a href="#">r/${post.subreddit}</a>
+                        • Posted by u/${post.author}
+                        • ${getRelativeTime(post.created_utc)}
+                        <span class="sentiment-tag ${sentimentClass}"><i class="${sentimentIcon}"></i> ${sentimentLabel}</span>
+                    </div>
+                    <h2 class="post-title"><a href="#">${escapeHtml(post.title)}</a></h2>
+                    ${fullText ? `<div class="post-text">${escapeHtml(shortText)}${hasLongText ? '<div class="post-text-fade"></div>' : ''}</div>` : ''}
+                    ${hasLongText ? '<button class="expand-button">Read more</button>' : ''}
+                    <div class="post-actions">
+                        <div class="post-action" data-action="comment">
+                            <i class="far fa-comment-alt"></i>
+                            <span>${post.num_comments} Comments</span>
+                        </div>
+                        <div class="post-action" data-action="share">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </div>
+                        <div class="post-action" data-action="save">
+                            <i class="far fa-bookmark"></i>
+                            <span>Save</span>
+                        </div>
+                        <div class="post-action">
+                            <a href="#" style="color:inherit; text-decoration:none;">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>View Analysis</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>`;
+            container.appendChild(postEl);
+        });
+        updateOverallSentiment(pos, neu, neg);
+        initVoteButtons();
+        initExpandTextButtons();
+    }
+
+    function initVoteButtons() {
+        document.querySelectorAll('.vote-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const post = this.closest('.post');
+                const countEl = post.querySelector('.vote-count');
+                let count = parseInt(countEl.textContent);
+                const isUp = this.classList.contains('upvote');
+                const other = post.querySelector(isUp ? '.downvote' : '.upvote');
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    count += isUp ? -1 : 1;
+                } else {
+                    this.classList.add('active');
+                    if (other.classList.contains('active')) {
+                        other.classList.remove('active');
+                        count += isUp ? 2 : -2;
+                    } else {
+                        count += isUp ? 1 : -1;
+                    }
+                }
+                countEl.textContent = count;
+            });
+        });
+    }
+
+    function initExpandTextButtons() {
+        document.querySelectorAll('.expand-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const post = this.closest('.post');
+                const textEl = post.querySelector('.post-text');
+                const fullText = post.dataset.fullText;
+                const shortText = fullText.slice(0,500);
+                const fadeEl = textEl.querySelector('.post-text-fade');
+                if (textEl.classList.contains('expanded')) {
+                    textEl.classList.remove('expanded');
+                    textEl.innerHTML = escapeHtml(shortText) + (fullText.length > 500 ? '<div class="post-text-fade"></div>' : '');
+                    if (fadeEl) fadeEl.style.display = 'block';
+                    this.textContent = 'Read more';
+                } else {
+                    textEl.classList.add('expanded');
+                    textEl.innerHTML = escapeHtml(fullText);
+                    if (fadeEl) fadeEl.style.display = 'none';
+                    this.textContent = 'Show less';
+                }
+            });
+        });
+    }
+
+    document.querySelectorAll('.filter-select').forEach(select => {
+        select.addEventListener('change', loadPosts);
+    });
+
+    document.addEventListener('DOMContentLoaded', loadPosts);
+    </script>
+</body>
+</html>
