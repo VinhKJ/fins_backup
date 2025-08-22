@@ -72,7 +72,7 @@
     height: 180px;
     top: -30px;
     left: -30px;
-    background-image: url('../images/new-reddit-king.png');
+    background-image: url('new-reddit-king.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -100,7 +100,7 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-image: url('../images/new-reddit-king.png');
+    background-image: url('new-reddit-king.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -121,7 +121,7 @@
 .card-spinner {
     width: 60px;
     height: 60px;
-    background-image: url('../images/new-reddit-king.png');
+    background-image: url('new-reddit-king.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
